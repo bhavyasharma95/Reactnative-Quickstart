@@ -13,7 +13,7 @@ import { Context as AuthContext } from "./context/AuthContext";
 
 const Signup = ({ navigation }) => {
   const { state, signup } = useContext(AuthContext);
-  const [email, setEmail] = useState("");
+  const [username, setusername] = useState("");
   const [password, setPassword] = useState("");
 
   return (
@@ -22,9 +22,9 @@ const Signup = ({ navigation }) => {
         <Text h3>Sign Up for Tracker</Text>
       </Spacer>
       <TextInput
-        label="Email"
-        value={email}
-        onChangeText={setEmail}
+        label="username "
+        value={username}
+        onChangeText={setusername}
         autoCapitalize="none"
         autoCorrect={false}
       />
@@ -39,7 +39,10 @@ const Signup = ({ navigation }) => {
       />
       {state.errorMessage ? <Text>{state.errorMessage}</Text> : null}
       <Spacer>
-        <Button title="Sign Up" onPress={() => signup({ email, password })} />
+        <Button
+          title="Sign Up"
+          onPress={() => signup({ username, password })}
+        />
       </Spacer>
       <Spacer />
       <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>

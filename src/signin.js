@@ -5,7 +5,7 @@ import { Context as AuthContext } from "./context/AuthContext";
 
 const Signin = ({ navigation }) => {
   const { state, signin } = useContext(AuthContext);
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   return (
@@ -14,9 +14,9 @@ const Signin = ({ navigation }) => {
         <Text h3>Sign In for Tracker</Text>
       </Spacer>
       <TextInput
-        label="Email"
-        value={email}
-        onChangeText={setEmail}
+        label="username"
+        value={username}
+        onChangeText={setUsername}
         autoCapitalize="none"
         autoCorrect={false}
       />
@@ -31,7 +31,10 @@ const Signin = ({ navigation }) => {
       />
       {state.errorMessage ? <Text>{state.errorMessage}</Text> : null}
       <Spacer>
-        <Button title="Sign Up" onPress={() => signin({ email, password })} />
+        <Button
+          title="Sign Up"
+          onPress={() => signin({ username, password })}
+        />
       </Spacer>
     </View>
   );

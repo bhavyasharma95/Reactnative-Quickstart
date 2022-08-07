@@ -1,6 +1,7 @@
 import creatingContext from "./creatingContext";
 import tracker from "../API/tracker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import qs from "qs";
 // import { navigate } from "../partials/navigationRef";
 
 const authReducer = (state, action) => {
@@ -16,11 +17,21 @@ const authReducer = (state, action) => {
 
 const signup =
   (dispatch) =>
-  async ({ email, password }, callback) => {
+  async ({ username, password }) => {
     try {
-      const response = await tracker.post("/login", { email, password });
-      await AsyncStorage.setItem("token", response.data.token);
-      dispatch({ type: "signin", payload: response.data.token });
+      const response = await tracker({
+        method: "post",
+        url: "/user",
+        data: qs.stringify({
+          username: username,
+          password: password,
+        }),
+        headers: {
+          "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+        },
+      });
+      await AsyncStorage.setItem("token", response.data.access_token);
+      dispatch({ type: "signin", payload: response.data.access_token });
       //   navigate("Home");
     } catch (err) {
       dispatch({
@@ -33,16 +44,26 @@ const signup =
 
 const signin =
   (dispatch) =>
-  async ({ email, password }) => {
+  async ({ username, password }) => {
     try {
-      const response = await tracker.post("/login/", { email, password });
-      await AsyncStorage.setItem("token", response.data.token);
-      dispatch({ type: "signin", payload: response.data.token });
-      console.log(response.data.token);
+      const response = await tracker({
+        method: "post",
+        url: "/login",
+        data: qs.stringify({
+          username: username,
+          password: password,
+        }),
+        headers: {
+          "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+        },
+      });
+      await AsyncStorage.setItem("token", response.data.access_token);
+      dispatch({ type: "signin", payload: response.data.access_token });
     } catch (err) {
+      console.log(err);
       dispatch({
         type: "error",
-        payload: "Something's not write, plz try again",
+        payload: "Start debuggin",
       });
     }
   };
