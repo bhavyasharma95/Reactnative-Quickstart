@@ -1,20 +1,52 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Provider as AuthProvider } from "./src/context/AuthContext";
 
-export default function App() {
+import Signup from "./src/signup";
+import SignIn from "./src/signin";
+
+import Home from "./src/home";
+
+let isSignedIn = false;
+const AuthStackNavigator = createNativeStackNavigator();
+const Stack = createNativeStackNavigator();
+
+export const AuthNavigator = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <AuthStackNavigator.Navigator>
+      <AuthStackNavigator.Screen
+        name="SignUp"
+        component={Signup}
+        options={{ headerShown: false }}
+      />
+      <AuthStackNavigator.Screen
+        name="SignIn"
+        component={SignIn}
+        options={{ headerShown: false }}
+      />
+    </AuthStackNavigator.Navigator>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export const MainNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+export default () => {
+  return (
+    <AuthProvider>
+      <NavigationContainer>
+        {isSignedIn ? <MainNavigator /> : <AuthNavigator />}
+      </NavigationContainer>
+    </AuthProvider>
+  );
+};
