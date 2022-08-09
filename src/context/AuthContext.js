@@ -2,7 +2,7 @@ import creatingContext from "./creatingContext";
 import tracker from "../API/tracker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import qs from "qs";
-// import { navigate } from "../partials/navigationRef";
+import { navigate } from "../partials/navigationRef";
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -32,7 +32,7 @@ const signup =
       });
       await AsyncStorage.setItem("token", response.data.access_token);
       dispatch({ type: "signin", payload: response.data.access_token });
-      //   navigate("Home");
+      navigate("SignIn");
     } catch (err) {
       dispatch({
         type: "error",
@@ -59,6 +59,7 @@ const signin =
       });
       await AsyncStorage.setItem("token", response.data.access_token);
       dispatch({ type: "signin", payload: response.data.access_token });
+      navigate("Home");
     } catch (err) {
       console.log(err);
       dispatch({
