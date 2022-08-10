@@ -1,52 +1,54 @@
-import * as React from "react";
+import React, { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Provider as AuthProvider } from "./src/context/AuthContext";
+import {
+  Provider as AuthProvider,
+  Context as AuthContext,
+} from "./src/context/AuthContext";
 
 import Signup from "./src/signup";
 import SignIn from "./src/signin";
 
 import Home from "./src/home";
 
-let isSignedIn = false;
-const AuthStackNavigator = createNativeStackNavigator();
 const Stack = createNativeStackNavigator();
 
-export const AuthNavigator = () => {
-  return (
-    <AuthStackNavigator.Navigator>
-      <AuthStackNavigator.Screen
-        name="SignUp"
-        component={Signup}
-        options={{ headerShown: false }}
-      />
-      <AuthStackNavigator.Screen
-        name="SignIn"
-        component={SignIn}
-        options={{ headerShown: false }}
-      />
-    </AuthStackNavigator.Navigator>
-  );
-};
+const RootNavigation = () => {
+  const { state } = useContext(AuthContext);
 
-export const MainNavigator = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Home"
-        component={Home}
-        options={{ headerShown: false }}
-      />
-    </Stack.Navigator>
+    <NavigationContainer>
+      {state.token != null ? (
+        <Stack.Navigator initialRouteName="SignUp">
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      ) : (
+        <Stack.Navigator initialRouteName="SignUp">
+          <Stack.Screen
+            name="SignIn"
+            component={SignIn}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SignUp"
+            component={Signup}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      )}
+    </NavigationContainer>
   );
 };
 
 export default () => {
+  // const { state } = useContext(AuthContext);
   return (
     <AuthProvider>
-      <NavigationContainer>
-        {isSignedIn ? <MainNavigator /> : <AuthNavigator />}
-      </NavigationContainer>
+      <RootNavigation />
     </AuthProvider>
   );
 };

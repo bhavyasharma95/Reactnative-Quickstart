@@ -29,6 +29,7 @@ const Signin = ({ navigation }) => {
         autoCapitalize="none"
         autoCorrect={false}
       />
+      {state.token ? <Text>{state.token}</Text> : null}
       {state.errorMessage ? <Text>{state.errorMessage}</Text> : null}
       <Spacer>
         <Button
