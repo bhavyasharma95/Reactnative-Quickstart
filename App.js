@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { navigationRef } from "./src/partials/RootNavigation";
 import {
   Provider as AuthProvider,
   Context as AuthContext,
@@ -17,7 +18,7 @@ const RootNavigation = () => {
   const { state } = useContext(AuthContext);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       {state.token != null ? (
         <Stack.Navigator initialRouteName="SignUp">
           <Stack.Screen

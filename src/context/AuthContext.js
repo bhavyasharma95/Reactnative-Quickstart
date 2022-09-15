@@ -2,8 +2,8 @@ import creatingContext from "./creatingContext";
 import tracker from "../API/tracker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import qs from "qs";
-import { CommonActions } from "@react-navigation/native";
-import { useNavigation } from "@react-navigation/native";
+import { navigate } from "../partials/RootNavigation";
+import * as RootNavigation from "../partials/RootNavigation";
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -22,7 +22,7 @@ const signup =
     try {
       const response = await tracker({
         method: "post",
-        url: "/user",
+        url: "/users",
         data: JSON.stringify({
           email: username,
           password: password,
@@ -31,6 +31,7 @@ const signup =
       });
       // await AsyncStorage.setItem("email", response.data.email);
       // dispatch({ type: "signin", payload: response.data.email });
+      RootNavigation.navigate("SignIn");
     } catch (err) {
       dispatch({
         type: "error",
