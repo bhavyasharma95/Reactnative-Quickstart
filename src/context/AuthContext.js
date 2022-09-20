@@ -35,7 +35,7 @@ const signup =
     } catch (err) {
       dispatch({
         type: "error",
-        payload: "Something's not write, plz try again",
+        payload: "debug",
       });
       console.log(err);
     }
@@ -62,7 +62,7 @@ const signin =
       console.log(err);
       dispatch({
         type: "error",
-        payload: "Start debuggin",
+        payload: "debug",
       });
     }
   };
@@ -71,8 +71,38 @@ const signout = (dispatch) => {
   return () => {};
 };
 
+const userpost =
+  (dispatch) =>
+  async ({ usertitle, userContent, token }) => {
+    try {
+      const response = await tracker({
+        method: "post",
+        url: "/posts",
+        data: JSON.stringify({
+          title: usertitle,
+          content: userContent,
+          published: true,
+        }),
+        headers: {
+          "content-type": "application/json",
+          accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      // await AsyncStorage.setItem("email", response.data.email);
+      // dispatch({ type: "signin", payload: response.data.email });
+      RootNavigation.navigate("Home");
+    } catch (err) {
+      dispatch({
+        type: "error",
+        payload: "debug",
+      });
+      console.log(err);
+    }
+  };
+
 export const { Provider, Context } = creatingContext(
   authReducer,
-  { signin, signout, signup },
+  { signin, signout, signup, userpost },
   { token: null, errorMessage: "" }
 );

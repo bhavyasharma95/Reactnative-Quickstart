@@ -6,13 +6,16 @@ import {
   Provider as AuthProvider,
   Context as AuthContext,
 } from "./src/context/AuthContext";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 import Signup from "./src/signup";
 import SignIn from "./src/signin";
+import Post from "./src/post";
 
 import Home from "./src/home";
 
 const Stack = createNativeStackNavigator();
+const queryClient = new QueryClient();
 
 const RootNavigation = () => {
   const { state } = useContext(AuthContext);
@@ -24,6 +27,11 @@ const RootNavigation = () => {
           <Stack.Screen
             name="Home"
             component={Home}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Post"
+            component={Post}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
@@ -48,8 +56,10 @@ const RootNavigation = () => {
 export default () => {
   // const { state } = useContext(AuthContext);
   return (
-    <AuthProvider>
-      <RootNavigation />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <RootNavigation />
+      </AuthProvider>
+    </QueryClientProvider>
   );
 };

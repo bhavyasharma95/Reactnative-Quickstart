@@ -3,38 +3,38 @@ import { View, StyleSheet, Text, TextInput, Button } from "react-native";
 import Spacer from "./partials/Spacer";
 import { Context as AuthContext } from "./context/AuthContext";
 
-const Signin = ({ navigation }) => {
-  const { state, signin } = useContext(AuthContext);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+const Post = ({ navigation }) => {
+  const { state, userpost } = useContext(AuthContext);
+  const [usertitle, setUsertitle] = useState("");
+  const [userContent, setUsercontent] = useState("");
+
+  token = state.token;
 
   return (
     <View style={styles.container}>
       <Spacer>
-        <Text h3>Sign In for Tracker</Text>
+        <Text h3>Write a Post</Text>
       </Spacer>
       <TextInput
-        label="username"
-        value={username}
-        onChangeText={setUsername}
+        label="usertitle"
+        value={usertitle}
+        onChangeText={setUsertitle}
         autoCapitalize="none"
         autoCorrect={false}
       />
       <Spacer />
       <TextInput
-        // secureTextEntry
-        label="Password"
-        value={password}
-        onChangeText={setPassword}
+        label="usercontent"
+        value={userContent}
+        onChangeText={setUsercontent}
         autoCapitalize="none"
         autoCorrect={false}
       />
-      {state.token ? <Text>{state.token}</Text> : null}
-      {state.errorMessage ? <Text>{state.errorMessage}</Text> : null}
+
       <Spacer>
         <Button
-          title="Sign In"
-          onPress={() => signin({ username, password })}
+          title="Post"
+          onPress={() => userpost({ usertitle, userContent, token })}
         />
       </Spacer>
     </View>
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Signin;
+export default Post;
